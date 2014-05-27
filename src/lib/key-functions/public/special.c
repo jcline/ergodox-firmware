@@ -176,7 +176,6 @@ void clear_line(void) {
 }
 
 void press_unpress(uint8_t key) {
-	clear_line();
 	_kbfun_press_release(true, key);
 	usb_keyboard_send();
 	_kbfun_press_release(false, key);
@@ -185,6 +184,7 @@ void press_unpress(uint8_t key) {
 
 void switch_buffer(void) {
 	uint8_t keycode = kb_layout_get(LAYER, ROW, COL);
+	clear_line();
 	press_unpress(KEY_Slash_Question);
 	press_unpress(KEY_b_B);
 	press_unpress(KEY_Spacebar);
