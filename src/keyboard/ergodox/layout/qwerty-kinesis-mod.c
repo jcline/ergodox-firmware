@@ -28,7 +28,7 @@ const uint8_t PROGMEM _kb_layout[KB_LAYERS][KB_ROWS][KB_COLUMNS] = {
 0,
 // left hand
     _equal,     _1,         _2,      _3,      _4,    _5, _esc,
-      _tab,     _Q,         _W,      _E,      _R,    _T,    2,
+      _tab,     _Q,         _W,      _E,      _R,    _T, _esc,
     _ctrlL,     _A,         _S,      _D,      _F,    _G,
    _shiftL,     _Z,         _X,      _C,      _V,    _B,    1,
       _esc, _grave, _backslash, _arrowL, _arrowR,
@@ -41,7 +41,7 @@ const uint8_t PROGMEM _kb_layout[KB_LAYERS][KB_ROWS][KB_COLUMNS] = {
            _H,      _J,      _K,       _L, _semicolon,     _quote,
         3, _N,      _M,  _comma,  _period,     _slash,    _shiftR,
                _arrowU, _arrowD,_bracketL,  _bracketR,      _guiR,
- _altR, _insert,
+ 4, _insert,
 _pageU,      0,      0,
 _pageD, _enter, _space ),
 
@@ -73,7 +73,7 @@ _pageD, _enter, _space ),
 // unused
 0,
 // left hand
-  1,  2,  3,  4,  5,  6,  7,
+  0,  0,  0,  0,  0,  0,  0,
   0,  0,  0,  0,  0,  0,  0,
   0,  0,  0,  0,  0,  0,
   0,  0,  0,  0,  0,  0,  0,
@@ -114,6 +114,27 @@ _shiftL,       0,   _3_kp,   _2_kp, _1_kp, 0, 0,
 0, 0, 0,
 0, 0, 0),
 
+	KB_MATRIX_LAYER(  // layout: layer 4: weechat
+// unused
+0,
+// left hand
+  1,  2,  3,  4,  5,  6,  7,
+  8,  9, 10, 11, 12, 13, 14,
+ 15, 16, 17, 18, 19, 20,
+ 21, 22, 23, 24, 25, 26, 27,
+ 28, 29, 30, 31, 32,
+4, 0,
+0, 0, 0,
+0, 0, 0,
+// right hand
+      33,  34,  35,  36,  37,  38,  39,
+      40,  41,  42,  43,  44,  45,  46,
+  	  47,  48,  49,  50,  51,  52,
+      53,  54,  55,  56,  57,  58,  59,
+              60,  61,  62,  63,  64,
+0, 0,
+0, 0, 0,
+0, 0, 0),
 };
 
 // ----------------------------------------------------------------------------
@@ -169,7 +190,7 @@ const void_funptr_t PROGMEM _kb_layout_press[KB_LAYERS][KB_ROWS][KB_COLUMNS] = {
 NULL,
 // left hand
  kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
- kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, lpush2,
+ kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
  kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
  s2kcap, kprrel, kprrel, kprrel, kprrel, kprrel, lpush1,
  kprrel, kprrel, kprrel, kprrel, kprrel,
@@ -182,7 +203,7 @@ NULL,
                  kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
          slpunum, kprrel, kprrel, kprrel, kprrel, kprrel, s2kcap,
                          kprrel, kprrel, kprrel, kprrel, kprrel,
- kprrel, kprrel,
+ lpush4, kprrel,
  kprrel,   NULL,   NULL,
  kprrel, kprrel, kprrel ),
 
@@ -205,7 +226,7 @@ NULL,
           NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
           NULL,   NULL,   NULL,   NULL,   NULL,   NULL, NULL,
                           NULL,   NULL,   NULL,   NULL, NULL,
- ktrans, ktrans,
+   NULL, ktrans,
  ktrans, ktrans, ktrans,
  ktrans, ktrans, ktrans ),
 
@@ -215,7 +236,7 @@ NULL,
 NULL,
 // left hand
    NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
-   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   lpush2,
+   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
    NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
    NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
    NULL,   NULL,   NULL,   NULL,   NULL,
@@ -251,9 +272,31 @@ NULL,
                  NULL, kprrel, kprrel, kprrel, kprrel, NULL,
         slponum, NULL, kprrel, kprrel, kprrel,   NULL, NULL,
                        kprrel, kprrel, kprrel,   NULL, NULL,
- ktrans, ktrans,
+   NULL, ktrans,
  ktrans, ktrans, ktrans,
  ktrans, ktrans, ktrans ),
+
+	KB_MATRIX_LAYER(  // press: layer 4: weechat
+// unused
+NULL,
+// left hand
+   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+   NULL,   NULL,   NULL,   NULL,   NULL,
+                                                   NULL,   NULL,
+                                           NULL,   NULL,   NULL,
+                                           NULL,   NULL,   NULL,
+// right hand
+          NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+          NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+                  NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+          NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+                          NULL,   NULL,   NULL,   NULL,   NULL,
+   lpush4,   NULL,
+   NULL,   NULL,   NULL,
+   NULL,   NULL,   NULL ),
 
 };
 
@@ -267,7 +310,7 @@ const void_funptr_t PROGMEM _kb_layout_release[KB_LAYERS][KB_ROWS][KB_COLUMNS] =
 NULL,
 // left hand
  kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
- kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, lpop2,
+ kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
  kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
  s2kcap, kprrel, kprrel, kprrel, kprrel, kprrel,  lpop1,
  kprrel, kprrel, kprrel, kprrel, kprrel,
@@ -280,7 +323,7 @@ NULL,
                 kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
           NULL, kprrel, kprrel, kprrel, kprrel, kprrel, s2kcap,
                         kprrel, kprrel, kprrel, kprrel, kprrel,
- kprrel, kprrel,
+ lpop4, kprrel,
  kprrel,   NULL,   NULL,
  kprrel, kprrel, kprrel ),
 
@@ -303,7 +346,7 @@ NULL,
           NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
           NULL,   NULL,   NULL,   NULL,   NULL,   NULL, NULL,
                           NULL,   NULL,   NULL,   NULL, NULL,
- ktrans, ktrans,
+   NULL, ktrans,
  ktrans, ktrans, ktrans,
  ktrans, ktrans, ktrans ),
 
@@ -312,8 +355,8 @@ NULL,
 // unused
 NULL,
 // left hand
-   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
-   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   lpop2,
+   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
    NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
    NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
    NULL,   NULL,   NULL,   NULL,   NULL,
@@ -349,9 +392,31 @@ NULL,
                  NULL, kprrel, kprrel, kprrel, kprrel, NULL,
            NULL, NULL, kprrel, kprrel, kprrel,   NULL, NULL,
                        kprrel, kprrel, kprrel,   NULL, NULL,
- ktrans, ktrans,
+   NULL, ktrans,
  ktrans, ktrans, ktrans,
  ktrans, ktrans, kprrel ),
+
+	KB_MATRIX_LAYER(  // release: layer 4: weechat
+// unused
+NULL,
+// left hand
+   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
+   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
+   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
+   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
+   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
+                                                   NULL,   NULL,
+                                           NULL,   NULL,   NULL,
+                                           NULL,   NULL,   NULL,
+// right hand
+          bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
+          bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
+                    bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
+          bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
+                              bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
+  lpop4,   NULL,
+   NULL,   NULL,   NULL,
+   NULL,   NULL,   NULL ),
 
 
 	KB_MATRIX_LAYER(  // release: layer N: nothing (just making sure unused
