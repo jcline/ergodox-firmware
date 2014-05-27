@@ -6,7 +6,6 @@
  * Project located at <https://github.com/benblazak/ergodox-firmware>
  * ------------------------------------------------------------------------- */
 
-
 #include <stdbool.h>
 #include <stdint.h>
 #include "../../../lib-other/pjrc/usb_keyboard/usb_keyboard.h"
@@ -162,5 +161,64 @@ void kbfun_mediakey_press_release(void) {
 }
 
 /* ----------------------------------------------------------------------------
+ * Custom functionality!
  * ------------------------------------------------------------------------- */
+
+void clear_line(void) {
+	_kbfun_press_release(true, KEY_LeftControl);
+	usb_keyboard_send();
+	_kbfun_press_release(true, KEY_u_U);
+	usb_keyboard_send();
+	_kbfun_press_release(false, KEY_u_U);
+	usb_keyboard_send();
+	_kbfun_press_release(false, KEY_LeftControl);
+	usb_keyboard_send();
+}
+
+void press_unpress(uint8_t key) {
+	clear_line();
+	_kbfun_press_release(true, key);
+	usb_keyboard_send();
+	_kbfun_press_release(false, key);
+	usb_keyboard_send();
+}
+
+void switch_buffer(void) {
+	uint8_t keycode = kb_layout_get(LAYER, ROW, COL);
+	press_unpress(KEY_Slash_Question);
+	press_unpress(KEY_b_B);
+	press_unpress(KEY_Spacebar);
+
+	switch(keycode) {
+		case 1:
+			press_unpress(KEY_1_Exclamation);
+			break;
+		case 2:
+			press_unpress(KEY_2_At);
+			break;
+		case 3:
+			press_unpress(KEY_3_Pound);
+			break;
+		case 4:
+			press_unpress(KEY_4_Dollar);
+			break;
+		case 5:
+			press_unpress(KEY_5_Percent);
+			break;
+		case 6:
+			press_unpress(KEY_6_Caret);
+			break;
+		case 7:
+			press_unpress(KEY_7_Ampersand);
+			break;
+		case 8:
+			press_unpress(KEY_8_Asterisk);
+			break;
+		case 9:
+			press_unpress(KEY_9_LeftParenthesis);
+			break;
+		default:
+			break;
+	}
+}
 

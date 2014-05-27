@@ -13,8 +13,10 @@
 #include "../../../lib/data-types/misc.h"
 #include "../../../lib/usb/usage-page/keyboard--short-names.h"
 #include "../../../lib/key-functions/public.h"
+#include "../../../lib/key-functions/private.h"
 #include "../matrix.h"
 #include "../layout.h"
+#include "default--matrix-control.h"
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -26,7 +28,7 @@ const uint8_t PROGMEM _kb_layout[KB_LAYERS][KB_ROWS][KB_COLUMNS] = {
 0,
 // left hand
     _equal,     _1,         _2,      _3,      _4,    _5, _esc,
-      _tab,     _Q,         _W,      _E,      _R,    _T, _esc,
+      _tab,     _Q,         _W,      _E,      _R,    _T,    2,
     _ctrlL,     _A,         _S,      _D,      _F,    _G,
    _shiftL,     _Z,         _X,      _C,      _V,    _B,    1,
       _esc, _grave, _backslash, _arrowL, _arrowR,
@@ -48,11 +50,11 @@ _pageD, _enter, _space ),
 // unused
 0,
 // left hand
-  0,        _F1,        _F2,       _F3,       _F4,       _F5,  _F6,
-  0,        _F13,      _F14,      _F15,      _F16,      _F17, _F18,
-  0,           0,         0,         0,         0,         0,
-  0,           0,         0,         0,         0,         0,    1,
-  0,           0,         0,         0,         0,
+       0,        _F1,        _F2,       _F3,       _F4,       _F5,  _F6,
+       0,        _F13,      _F14,      _F15,      _F16,      _F17, _F18,
+  _ctrlL,           0,         0,         0,         0,         0,
+       0,           0,         0,         0,         0,         0,    1,
+       0,           0,         0,         0,         0,
 0, 0,
 0, 0, 0,
 0, 0, 0,
@@ -71,7 +73,7 @@ _pageD, _enter, _space ),
 // unused
 0,
 // left hand
-  0,  0,  0,  0,  0,  0,  0,
+  1,  2,  3,  4,  5,  6,  7,
   0,  0,  0,  0,  0,  0,  0,
   0,  0,  0,  0,  0,  0,
   0,  0,  0,  0,  0,  0,  0,
@@ -155,6 +157,8 @@ _shiftL,       0,   _3_kp,   _2_kp, _1_kp, 0, 0,
 #define  slpunum  &kbfun_layer_push_numpad
 #define  slponum  &kbfun_layer_pop_numpad
 
+#define  bufchg   &switch_buffer
+
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
@@ -165,7 +169,7 @@ const void_funptr_t PROGMEM _kb_layout_press[KB_LAYERS][KB_ROWS][KB_COLUMNS] = {
 NULL,
 // left hand
  kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
- kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
+ kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, lpush2,
  kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
  s2kcap, kprrel, kprrel, kprrel, kprrel, kprrel, lpush1,
  kprrel, kprrel, kprrel, kprrel, kprrel,
@@ -189,7 +193,7 @@ NULL,
 // left hand
    NULL, kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
    NULL, kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
-   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+ kprrel,   NULL,   NULL,   NULL,   NULL,   NULL,
    NULL,   NULL,   NULL,   NULL,   NULL,   NULL, lpush1,
    NULL,   NULL,   NULL,   NULL,   NULL,
                                                  ktrans, ktrans,
@@ -211,7 +215,7 @@ NULL,
 NULL,
 // left hand
    NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
-   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   lpush2,
    NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
    NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
    NULL,   NULL,   NULL,   NULL,   NULL,
@@ -263,7 +267,7 @@ const void_funptr_t PROGMEM _kb_layout_release[KB_LAYERS][KB_ROWS][KB_COLUMNS] =
 NULL,
 // left hand
  kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
- kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
+ kprrel, kprrel, kprrel, kprrel, kprrel, kprrel, lpop2,
  kprrel, kprrel, kprrel, kprrel, kprrel, kprrel,
  s2kcap, kprrel, kprrel, kprrel, kprrel, kprrel,  lpop1,
  kprrel, kprrel, kprrel, kprrel, kprrel,
@@ -308,8 +312,8 @@ NULL,
 // unused
 NULL,
 // left hand
-   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
-   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
+   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,   bufchg,
+   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   lpop2,
    NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
    NULL,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
    NULL,   NULL,   NULL,   NULL,   NULL,
@@ -355,16 +359,16 @@ NULL,
 // unused
 NULL,
 // other
- kprrel, lpush8,  lpop8,   NULL,   NULL,   NULL,   NULL,   NULL,
-   ktog, lpush9,  lpop9,   NULL,   NULL,   NULL,   NULL,   NULL,
- ktrans,lpush10, lpop10,   NULL,   NULL,   NULL,   NULL,   NULL,
- lpush1,  lpop1,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
- lpush2,  lpop2, dbtldr,   NULL,   NULL,   NULL,   NULL,   NULL,
- lpush3,  lpop3,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL,
- lpush4,  lpop4, s2kcap,   NULL,   NULL,   NULL,   NULL,   NULL,
- lpush5,  lpop5,slpunum,   NULL,   NULL,   NULL,   NULL,   NULL,
- lpush6,  lpop6,slponum,   NULL,   NULL,   NULL,   NULL,   NULL,
- lpush7,  lpop7,   NULL,   NULL,   NULL,   NULL,   NULL,   NULL )
+ kprrel, lpush8,  lpop8,   NULL,   bufchg,   NULL,   NULL,   NULL,
+   ktog, lpush9,  lpop9,   NULL,   NULL,     NULL,   NULL,   NULL,
+ ktrans,lpush10, lpop10,   NULL,   NULL,     NULL,   NULL,   NULL,
+ lpush1,  lpop1,   NULL,   NULL,   NULL,     NULL,   NULL,   NULL,
+ lpush2,  lpop2, dbtldr,   NULL,   NULL,     NULL,   NULL,   NULL,
+ lpush3,  lpop3,   NULL,   NULL,   NULL,     NULL,   NULL,   NULL,
+ lpush4,  lpop4, s2kcap,   NULL,   NULL,     NULL,   NULL,   NULL,
+ lpush5,  lpop5,slpunum,   NULL,   NULL,     NULL,   NULL,   NULL,
+ lpush6,  lpop6,slponum,   NULL,   NULL,     NULL,   NULL,   NULL,
+ lpush7,  lpop7,   NULL,   NULL,   NULL,     NULL,   NULL,   NULL )
 
 };
 
