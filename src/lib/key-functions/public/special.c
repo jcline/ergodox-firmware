@@ -182,14 +182,11 @@ void press_unpress(uint8_t key) {
 	usb_keyboard_send();
 }
 
-void switch_buffer(void) {
-	uint8_t keycode = kb_layout_get(LAYER, ROW, COL);
-	clear_line();
-	press_unpress(KEY_Slash_Question);
-	press_unpress(KEY_b_B);
-	press_unpress(KEY_Spacebar);
-
-	switch(keycode) {
+void send_number(uint8_t number) {
+	switch(number) {
+		case 0:
+			press_unpress(KEY_0_RightParenthesis);
+			break;
 		case 1:
 			press_unpress(KEY_1_Exclamation);
 			break;
@@ -220,5 +217,31 @@ void switch_buffer(void) {
 		default:
 			break;
 	}
+}
+
+void switch_buffer(void) {
+	uint8_t keycode = kb_layout_get(LAYER, ROW, COL);
+	clear_line();
+	press_unpress(KEY_Slash_Question);
+	press_unpress(KEY_b_B);
+	press_unpress(KEY_Spacebar);
+
+	if (keycode > 99) {
+		send_number(1);
+		keycode %= 100;
+		if (keycode > 9) {
+			send_number(keycode/10);
+			keycode %= 10;
+		} else {
+			send_number(0);
+		}
+	} else if (keycode > 9) {
+		send_number(keycode/10);
+		keycode %= 10;
+	}
+
+	send_number(keycode);
+
+	press_unpress(KEY_ReturnEnter);
 }
 
